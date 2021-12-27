@@ -8,9 +8,23 @@ import java.util.ArrayList;
 public class FindMedianSortedArrays {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         // 第一种方式：合并两个数组，取中位数
-        return 0.0;
+        int len1 = nums1.length, len2 = nums2.length;
+        int[] result = new int[len1 + len2];
+        int i = 0, j = 0;
+        while (i < len1 || j < len2) {
+            if (i >= len1) { result[i + j] = nums2[j]; j++;continue;}
+            if (j >= len2) { result[i + j] = nums1[i]; i++;continue;}
+            if (nums1[i] <= nums2[j]) {
+                result[i + j] = nums1[i];
+                i++;
+            } else {
+                result[i + j] = nums2[j];
+                j++;
+            }
+        }
+        return (result[(result.length-1)/2] + result[(result.length-1)/2 + (result.length-1)%2]) / 2.0;
     }
-    // 第二种方式：
+    // 第二种方式：二分查找法
     // 不需要合并两个有序数组，只要找到中位数的位置即可。由于两个数组的长度已知，因此中位数对应的两个数组的下标之和也是已知的。
     // 维护两个指针，初始时分别指向两个数组的下标 00 的位置，
     // 每次将指向较小值的指针后移一位（如果一个指针已经到达数组末尾，则只需要移动另一个数组的指针），直到到达中位数的位置
@@ -107,7 +121,9 @@ public class FindMedianSortedArrays {
         return (m + n) % 2 == 0 ? (median1 + median2) / 2.0 : median1;
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
+        int[] a = {1,2};
+        int[] b = {3,4};
+        FindMedianSortedArrays.class.newInstance().findMedianSortedArrays(a, b);
     }
 }
